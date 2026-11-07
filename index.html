@@ -303,10 +303,10 @@ body.category-filter .lab:not(.act){opacity:.42}
   #wheelFeature img.color-page{filter:none}
   #wheelFeature button{justify-self:start;padding:0 0 3px;border:0;border-bottom:1px solid #caff00;background:transparent;color:#f3f4ed;font:600 13px/1.2 'Inter Tight',Arial,sans-serif;cursor:pointer}
   body.about-open #wheelFeature,body.dopen #wheelFeature{display:none!important}
-  body:not(.grid-view) #stage{position:fixed;inset:calc(382px + env(safe-area-inset-top,0px)) 0 calc(76px + env(safe-area-inset-bottom,0px));height:auto;overflow:hidden;perspective:1250px;touch-action:none;overscroll-behavior:contain}
+  body:not(.grid-view) #stage{position:fixed;inset:calc(430px + env(safe-area-inset-top,0px)) 0 calc(76px + env(safe-area-inset-bottom,0px));height:auto;overflow:hidden;perspective:1250px;touch-action:none;overscroll-behavior:contain}
   body:not(.grid-view) #labels{display:none}
   body:not(.grid-view).mobile-filters-open #wheelFeature{top:calc(158px + env(safe-area-inset-top,0px))}
-  body:not(.grid-view).mobile-filters-open #stage{top:calc(426px + env(safe-area-inset-top,0px))}
+  body:not(.grid-view).mobile-filters-open #stage{top:calc(490px + env(safe-area-inset-top,0px))}
   body:not(.grid-view).mobile-filters-open #labels{position:fixed!important;inset:calc(104px + env(safe-area-inset-top,0px)) 0 auto!important;display:flex!important;flex-wrap:nowrap;align-items:center;gap:6px;height:44px;max-height:44px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;scrollbar-width:none;padding:0 12px;background:var(--bg);border-bottom:1px solid rgba(243,244,237,.14);z-index:18}
   body:not(.grid-view).mobile-filters-open #labels::-webkit-scrollbar{display:none}
   body:not(.grid-view).mobile-filters-open .lab{position:relative!important;left:auto!important;top:auto!important;transform:none!important;flex:0 0 auto;max-width:none;min-height:30px;padding:7px 9px;font-size:10px;line-height:1}
@@ -455,22 +455,22 @@ const cats=[...new Set(PROJECTS.map(p=>p.category))].map((name,ci)=>{
 let W,H,rx,ry,cw,ch,orbitOutset=64,phonePortrait=false,phase=0,vel=0,target=null,drag=false,lastX=0,hov=-1,mx=.5,my=.5,tx=0,ty=0,focusK=0,gridMode=false,activeCategory=null,autoTour=true,tourStart=performance.now();
 const hv=new Float32Array(M);
 function size(){
-  W=stage.clientWidth;H=stage.clientHeight;phonePortrait=W<760&&H>W;
-  const cardRx=phonePortrait?W*.44:W*(H<480?.28:.40),cardRy=phonePortrait?Math.min(H*.30,W*.72):H<480?Math.min(H*.20,cardRx*.55):W<600?Math.min(H*.32,cardRx*1.2):Math.min(H*.42,cardRx*.72);
+  W=stage.clientWidth;H=stage.clientHeight;phonePortrait=innerWidth<760&&innerHeight>innerWidth;
+  const cardRx=phonePortrait?W*.56:W*(H<480?.28:.40),cardRy=phonePortrait?Math.min(H*.60,W*1.2):H<480?Math.min(H*.20,cardRx*.55):W<600?Math.min(H*.32,cardRx*1.2):Math.min(H*.42,cardRx*.72);
   orbitOutset=phonePortrait?Math.max(12,Math.min(18,W*.04)):64;
-  rx=cardRx*(phonePortrait?.54:.66);ry=cardRy*.66;
+  rx=cardRx*(phonePortrait?.48:.66);ry=cardRy*(phonePortrait?.75:.66);
   const circumference=Math.PI*(3*(cardRx+cardRy)-Math.sqrt((3*cardRx+cardRy)*(cardRx+3*cardRy)));
   cw=Math.max(20,Math.min(W*(phonePortrait?.175:.14),225,circumference/M*(phonePortrait?1.75:1.45)));ch=cw*.68;
   cards.forEach(c=>{c.style.width=cw+'px';c.style.height=ch+'px';c.style.marginLeft=-cw/2+'px';c.style.marginTop=-ch/2+'px'});
 }
 addEventListener('resize',size);size();
 
-function currentFrontCard(){const raw=Math.round((Math.PI/2-phase)*M/(Math.PI*2));return ((raw%M)+M)%M}
+function currentFrontCard(){const angle=target===null?phase:target,raw=Math.round((Math.PI/2-angle)*M/(Math.PI*2));return ((raw%M)+M)%M}
 function settleOnFront(){const k=currentFrontCard(),desired=Math.PI/2-k/M*Math.PI*2;focusK=k;target=phase+Math.atan2(Math.sin(desired-phase),Math.cos(desired-phase));vel=0}
 let wheelSnapTimer=0;
 function scheduleWheelSnap(){clearTimeout(wheelSnapTimer);wheelSnapTimer=setTimeout(settleOnFront,170)}
 const wheelFeatureImage=document.getElementById('wheelFeatureImage'),wheelFeatureMeta=document.getElementById('wheelFeatureMeta'),wheelFeatureTitle=document.getElementById('wheelFeatureTitle'),wheelFeatureOpen=document.getElementById('wheelFeatureOpen');let featuredProject=-1;
-function updateWheelFeature(k){const pi=Math.max(0,Math.min(N-1,k/REPEAT|0));if(pi===featuredProject)return;featuredProject=pi;const p=PROJECTS[pi],image=p.thumbs&&p.thumbs.length?p.thumbs[0]:p.image||ph(pi+1);wheelFeatureImage.src=image;wheelFeatureImage.alt=p.title;wheelFeatureImage.classList.toggle('color-page',!!p.preserveColor||p.category==='INTERNSHIP');wheelFeatureMeta.textContent=p.category+' · '+p.year;wheelFeatureTitle.textContent=p.title;wheelFeatureOpen.setAttribute('aria-label','View project: '+p.title)}
+function updateWheelFeature(k){const pi=Math.max(0,Math.min(N-1,k/REPEAT|0));if(pi===featuredProject)return;featuredProject=pi;const p=PROJECTS[pi],image=p.preserveColor&&p.thumbs&&p.thumbs.length?p.thumbs[0]:p.image||p.images&&p.images[0]||p.thumbs&&p.thumbs[0]||ph(pi+1);wheelFeatureImage.src=image;wheelFeatureImage.alt=p.title;wheelFeatureImage.classList.toggle('color-page',!!p.preserveColor||p.category==='INTERNSHIP');wheelFeatureMeta.textContent=p.category+' · '+p.year;wheelFeatureTitle.textContent=p.title;wheelFeatureOpen.setAttribute('aria-label','View project: '+p.title)}
 wheelFeatureOpen.addEventListener('click',()=>{if(featuredProject>=0)openDetail(featuredProject,cards[featuredProject],0)});
 
 function setGridMode(enabled){gridMode=enabled;document.body.classList.toggle('grid-view',gridMode);const button=document.getElementById('gridToggle');button.classList.toggle('on',gridMode);button.setAttribute('aria-pressed',String(gridMode));button.textContent=matchMedia('(max-width:600px)').matches?(gridMode?'3D +':'Ellipse +'):(gridMode?'3D':'Ellipse');if(gridMode){document.body.classList.remove('wheel-active');autoTour=false;target=null;hov=-1;cards.forEach((card,k)=>card.hidden=!!activeCategory&&PROJECTS[k/REPEAT|0].category!==activeCategory);ring.querySelectorAll('.grid-section-title').forEach(section=>section.hidden=!!activeCategory&&section.dataset.category!==activeCategory)}else{cards.forEach(card=>card.hidden=false);ring.querySelectorAll('.grid-section-title').forEach(section=>section.hidden=false);focusK=currentFrontCard();updateWheelFeature(focusK)}size();resizeDotGrid()}
@@ -478,13 +478,14 @@ document.getElementById('gridToggle').onclick=()=>setGridMode(!gridMode);
 const mobileToolbar=document.getElementById('mobileToolbar'),filterToggle=document.getElementById('filterToggle'),gridToggleButton=document.getElementById('gridToggle'),mainHeader=document.querySelector('header');
 function syncMobileControls(){const phone=matchMedia('(max-width:600px)').matches;if(phone){if(gridToggleButton.parentElement!==mobileToolbar)mobileToolbar.appendChild(gridToggleButton)}else if(gridToggleButton.parentElement!==mainHeader){mainHeader.insertBefore(gridToggleButton,mainHeader.querySelector('.sp'))}gridToggleButton.textContent=phone?(gridMode?'3D +':'Ellipse +'):(gridMode?'3D':'Ellipse')}
 filterToggle.addEventListener('click',()=>{const open=!document.body.classList.contains('mobile-filters-open');document.body.classList.toggle('mobile-filters-open',open);filterToggle.setAttribute('aria-expanded',String(open))});
-addEventListener('resize',syncMobileControls,{passive:true});syncMobileControls();updateWheelFeature(0);
+addEventListener('resize',syncMobileControls,{passive:true});syncMobileControls();updateWheelFeature(0);if(matchMedia('(max-width:600px)').matches){autoTour=false;focusK=0;target=Math.PI/2}
 /* ---------- input ---------- */
 let downCard=null,sx=0,sy=0,lastY=0,hoverAnchorX=0,hoverAnchorY=0;
 stage.addEventListener('pointerdown',e=>{autoTour=false;document.body.classList.add('wheel-active');focusK=currentFrontCard();downCard=e.target.closest('.card');sx=e.clientX;sy=e.clientY;drag=true;lastX=e.clientX;lastY=e.clientY;vel=0;target=null;stage.classList.add('drag');stage.setPointerCapture(e.pointerId)});
 stage.addEventListener('pointermove',e=>{
   mx=e.clientX/W;my=e.clientY/H;
   if(drag){const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;const d=phonePortrait?dx+dy*.55:dx;phase-=d/rx;vel=-d/rx*.6}
+  else if(matchMedia('(max-width:600px)').matches)hov=-1;
   else{
     const c=e.target.closest&&e.target.closest('.card'),next=c?+c.dataset.k:-1;
     const moved=Math.hypot(e.clientX-hoverAnchorX,e.clientY-hoverAnchorY);
@@ -583,6 +584,8 @@ function frame(){
   if(target!==null){let d=Math.atan2(Math.sin(target-phase),Math.cos(target-phase));phase+=d*.07;if(Math.abs(d)<.002)target=null}
   else if(!drag){phase+=vel+(hov<0&&!reduce?.0005:0);vel*=.94;if(Math.abs(vel)<1e-5)vel=0}
   tx+=((my-.5)*-9-tx)*.06;ty+=((mx-.5)*12-ty)*.06;
+  const centerX=phonePortrait?W*.83:W/2,centerY=phonePortrait?H*.44:H/2;
+  ring.style.transformOrigin=`${centerX}px ${centerY}px`;
   ring.style.transform=`rotateX(${tx}deg) rotateY(${ty}deg)`;
   const zr=250;
   for(let k=0;k<M;k++){
@@ -591,14 +594,14 @@ function frame(){
     let x=ca*rx,y=sa*ry,z0=sa*zr,front=(sa+1)/2,edge=Math.pow(Math.abs(sa),1.35);
     let rY=(ca>=0?-1:1)*Math.min(phonePortrait?62:88,10+(phonePortrait?52:80)*edge),rZ=ca*sa*9,sc=.6+.4*front;
     const z=z0+h*(zr+140-z0),f=(P-z)/(P-z0);
-    x*=f;y*=f;const depth=z;
+    x=(centerX-W/2)+x*f;y=(centerY-H/2)+y*f;const depth=z;
     const t=`translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,${depth.toFixed(1)}px) rotateY(${(rY*(1-h)).toFixed(2)}deg) rotateZ(${(rZ*(1-h)).toFixed(2)}deg) scale(${(sc*(1+.34*h)).toFixed(3)})`;
     const c=cards[k];c.classList.toggle('focused',k===(hov>=0?hov:focusK));c.style.transform=t;
     c.style.opacity=activeCategory&&PROJECTS[k/REPEAT|0].category!==activeCategory?'.14':'1';
   }
   cats.forEach(c=>{
     const a=c.mid/M*Math.PI*2+phase,ca=Math.cos(a),sa=Math.sin(a),f=P/(P-sa*zr);
-    const px=W/2+ca*rx*f+ca*(cw*.55+orbitOutset),py=H/2+sa*ry*f+sa*(ch*.5*(.6+.4*(sa+1)/2)+orbitOutset);
+    const px=centerX+ca*rx*f+ca*(cw*.55+orbitOutset),py=centerY+sa*ry*f+sa*(ch*.5*(.6+.4*(sa+1)/2)+orbitOutset);
     const labelW=c.el.offsetWidth,labelH=c.el.offsetHeight,anchorX=px+(-50+ca*50)*labelW/100;
     const safeX=Math.max(8,Math.min(W-labelW-8,anchorX)),safeY=Math.max(58+labelH/2,Math.min(H-54-labelH/2,py));
     c.el.style.transform=`translate(${safeX.toFixed(1)}px,${safeY.toFixed(1)}px)`;
