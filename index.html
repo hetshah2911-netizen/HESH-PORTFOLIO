@@ -467,7 +467,7 @@ function size(){
 }
 addEventListener('resize',size);size();
 
-function wheelFocusAngle(){return phonePortrait?-Math.PI/2:Math.PI/2}
+function wheelFocusAngle(){return phonePortrait?0:Math.PI/2}
 function currentFrontCard(){const angle=target===null?phase:target,raw=Math.round((wheelFocusAngle()-angle)*M/(Math.PI*2));return ((raw%M)+M)%M}
 function settleOnFront(){const k=currentFrontCard(),desired=wheelFocusAngle()-k/M*Math.PI*2;focusK=k;target=phase+Math.atan2(Math.sin(desired-phase),Math.cos(desired-phase));vel=0}
 let wheelSnapTimer=0;
