@@ -596,9 +596,9 @@ function frame(){
     const h=hv[k]+=((k===(hov>=0?hov:focusK)&&!drag?1:0)-hv[k])*.14;
     let x=ca*rx,y=sa*ry,z0=(phonePortrait?-sa:sa)*zr,front=phonePortrait?(1-sa)/2:(sa+1)/2,edge=Math.pow(Math.abs(sa),1.35);
     let rY=(ca>=0?-1:1)*Math.min(phonePortrait?24:88,10+(phonePortrait?14:80)*edge),rZ=ca*sa*9,sc=.6+.4*front;
-    const z=z0+h*(zr+140-z0),f=(P-z)/(P-z0);
+    const z=z0+h*(zr+180-z0),f=(P-z)/(P-z0);
     x=(centerX-W/2)+x*f;y=(centerY-H/2)+y*f;const depth=z;
-    const t=`translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,${depth.toFixed(1)}px) rotateY(${(rY*(1-h)).toFixed(2)}deg) rotateZ(${(rZ*(1-h)).toFixed(2)}deg) scale(${(sc*(1+.34*h)).toFixed(3)})`;
+    const t=`translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,${depth.toFixed(1)}px) rotateY(${(rY*(1-h)).toFixed(2)}deg) rotateZ(${(rZ*(1-h)).toFixed(2)}deg) scale(${(sc*(1+.5*h)).toFixed(3)})`;
     const c=cards[k];c.classList.toggle('focused',k===(hov>=0?hov:focusK));c.style.transform=t;
     c.style.opacity=activeCategory&&PROJECTS[k/REPEAT|0].category!==activeCategory?'.14':'1';
   }
