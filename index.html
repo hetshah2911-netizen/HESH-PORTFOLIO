@@ -268,6 +268,33 @@ body.category-filter .lab:not(.act){opacity:.42}
  body:not(.grid-view) .lab{position:relative!important;left:auto!important;top:auto!important;transform:none!important;flex:0 0 auto;max-width:none;white-space:nowrap;font-size:9px;padding:4px 6px}
 }#detail #dstack img.color-page{filter:none!important}
 #loadingScreen{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:#050605;color:#f3f4ed;opacity:1;visibility:visible;transition:opacity .55s cubic-bezier(.65,0,.25,1),visibility 0s .55s}#loadingScreen.done{opacity:0;visibility:hidden;pointer-events:none}.loading-lockup{width:min(270px,72vw);text-align:center}.loading-mark{color:#caff00;font-size:clamp(28px,8vw,42px);font-weight:600;letter-spacing:.16em;white-space:nowrap}.loading-label{margin:14px 0 0;font-size:10px;letter-spacing:.2em;color:rgba(243,244,237,.68)}.loading-track{height:2px;margin:24px auto 0;width:100%;background:rgba(243,244,237,.14);overflow:hidden}.loading-track i{display:block;width:38%;height:100%;background:#caff00;transform:translateX(-110%);animation:loadingSweep 1.15s ease-in-out infinite}@keyframes loadingSweep{to{transform:translateX(280%)}}@media(prefers-reduced-motion:reduce){#loadingScreen{transition:none}.loading-track i{animation:none;transform:translateX(0);width:100%}}
+/* Phone folio: editorial project list with a compact filter bar */
+#mobileToolbar{display:none}
+.grid-view-link{display:none}
+@media(max-width:600px){
+  header{position:fixed;top:env(safe-area-inset-top,0px);height:58px;padding:0 16px;gap:clamp(12px,4vw,20px);background:rgba(5,6,5,.96);border-bottom:1px solid rgba(243,244,237,.14);backdrop-filter:blur(14px)}
+  header .logo{width:82px;height:30px;margin-right:0}
+  header a{font-size:15px}
+  #mobileToolbar{position:fixed;top:calc(58px + env(safe-area-inset-top,0px));left:0;right:0;height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;z-index:19;background:var(--bg);border-bottom:1px solid rgba(243,244,237,.14)}
+  #mobileToolbar button{appearance:none;border:0;border-bottom:1px solid currentColor;border-radius:0;padding:4px 0;background:transparent;color:var(--ink);font:600 14px 'Inter Tight',Arial,sans-serif;white-space:nowrap;cursor:pointer}
+  #mobileToolbar .grid-toggle{display:inline-flex;align-items:center}\r\n  #filterToggle{max-width:70vw;overflow:hidden;text-overflow:ellipsis}
+  body.about-open #mobileToolbar,body.dopen #mobileToolbar{display:none}
+  body.grid-view #stage{position:fixed;inset:calc(104px + env(safe-area-inset-top,0px)) 0 0;height:auto;overflow-x:hidden;overflow-y:auto;perspective:none;touch-action:pan-y;overscroll-behavior:contain}
+  body.grid-view.mobile-filters-open #stage{top:calc(148px + env(safe-area-inset-top,0px))}
+  body.grid-view #ring{position:relative;left:0;top:0;width:100%;height:auto;display:grid;grid-template-columns:minmax(0,1fr);gap:0;padding:8px 18px calc(52px + env(safe-area-inset-bottom,0px));transform:none!important;transform-style:flat}
+  body.grid-view .grid-section-title{margin:28px 0 8px;padding:0 0 11px;border-bottom:1px solid rgba(243,244,237,.2);font-size:10px;letter-spacing:.12em}
+  body.grid-view .card{position:relative;left:auto;top:auto;width:100%!important;height:auto!important;min-height:0;margin:0 0 18px!important;display:flex;flex-direction:column;transform:none!important;opacity:1!important;outline:0;border-bottom:1px solid rgba(243,244,237,.16);border-radius:0;background:transparent;box-shadow:none}
+  body.grid-view .card img{order:2;display:block;width:100%;height:auto;aspect-ratio:1.52;flex:none;object-fit:cover;filter:grayscale(100%) contrast(1.08)}
+  body.grid-view .grid-meta{order:1;display:flex;flex-direction:column;gap:5px;padding:7px 0 12px}
+  body.grid-view .grid-meta span{font-size:11px;letter-spacing:.03em;text-transform:none;color:rgba(243,244,237,.66)}
+  body.grid-view .grid-meta b{font-size:clamp(23px,6.2vw,34px);line-height:1.08;font-weight:500;color:#f3f4ed}
+  body.grid-view .grid-view-link{order:3;display:block;align-self:flex-start;margin:11px 0 13px;padding-bottom:3px;border-bottom:1px solid currentColor;font-size:14px;font-weight:600;color:#f3f4ed}
+  body.grid-view #labels,body.grid-view #center{display:none}
+  body.grid-view.mobile-filters-open #labels{position:fixed!important;inset:calc(104px + env(safe-area-inset-top,0px)) 0 auto!important;display:flex!important;flex-wrap:nowrap;align-items:center;gap:6px;height:44px;max-height:44px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;scrollbar-width:none;padding:0 12px;background:var(--bg);border-bottom:1px solid rgba(243,244,237,.14);z-index:18}
+  body.grid-view.mobile-filters-open #labels::-webkit-scrollbar{display:none}
+  body.grid-view.mobile-filters-open .lab{position:relative!important;left:auto!important;top:auto!important;transform:none!important;flex:0 0 auto;max-width:none;min-height:30px;padding:7px 9px;font-size:10px;line-height:1}
+  body.grid-view .foot{display:none}
+}
 </style>
 </head>
 <body>
@@ -279,6 +306,7 @@ body.category-filter .lab:not(.act){opacity:.42}
   <a class="on" id="projectsNav">Projects</a><a id="aboutNav">About</a><button id="gridToggle" class="grid-toggle" type="button" aria-pressed="false">Ellipse</button>
   <span class="sp"></span><span class="hide-s">EN / हिं</span>
 </header>
+<div id="mobileToolbar" aria-label="Project browsing controls"><button id="filterToggle" type="button" aria-expanded="false">Filter Projects +</button></div>
 <div id="aboutPage" role="dialog" aria-modal="true" aria-labelledby="aboutTitle"><canvas id="aboutDotGrid" aria-hidden="true"></canvas><div class="about-layout"><section class="about-masthead"><div class="about-heading"><div class="about-eyebrow">Portfolio · About</div><h1 class="about-mark" id="aboutTitle">Het Shah</h1><div class="about-role">Architecture Undergraduate Student</div><p class="about-bio">An enthusiastic and curious designer, driven by a deep passion for architecture, with a belief that every space should evoke both function and feeling. Approaching design as a form of sculpture, I shape forms that encourage playfulness, curiosity, and connection.</p></div><div class="about-photo"><img src="1958a7b4efa473fbb344.png" alt="Het Shah, architecture undergraduate student"></div></section><div class="about-meta-grid"><section><h2>Languages</h2><p>English · Hindi · Gujarati · Marwadi · Marathi</p></section><section><h2>Location</h2><p>Mumbai · Maharashtra · India</p></section><section><h2>Contact</h2><ul class="about-contact" id="aboutContact"><li><a href="mailto:hetshah2911@gmail.com">hetshah2911@gmail.com</a></li><li><a href="tel:+919619552292">+91 9619552292</a></li><li>Instagram</li></ul></section></div><div class="about-study-grid"><section><h2>Education</h2><div class="about-education"><div><span class="about-ed-year">2011 — 2022</span><p class="about-ed-title">Rustomjee International School &amp; Junior College<br>SSC and HSC · Dahisar</p></div><div><span class="about-ed-year">2022 — 2027</span><p class="about-ed-title">IES College of Architecture<br>B.Arch · Bandra</p></div></div></section><section><h2>Softwares</h2><ul class="about-software"><li>AutoCAD</li><li>SketchUp</li><li>Rhino</li><li>Grasshopper</li><li>Photoshop</li><li>D5</li><li>InDesign</li><li>Enscape</li></ul></section></div><section class="about-competitions"><h2>Competitions</h2><ul><li>67th HUDCO Trophy · NASA India — <strong>Citation I</strong> · Trophy Head</li><li>67th LIK Trophy · NASA India — <strong>Juror’s Choice 2</strong> · Technical Details &amp; Documentation</li><li>67th MSL Trophy · NASA India — <strong>Shortlisted Top 12</strong> · Trophy Head</li><li>67th G-Scn Trophy · NASA India — Participated · Design &amp; Research</li><li>67th WAT Trophy · NASA India — Participated</li><li>66th G-Scn Trophy · NASA India — <strong>Shortlisted Top 12</strong> · Design &amp; Research</li><li>66th HUDCO Trophy · NASA India — Participated · Research &amp; Analysis</li><li>66th ANDC Trophy · NASA India — Participated · Design &amp; Research</li><li>66th MSL Trophy · NASA India — Participated · Design &amp; Research</li><li>COA Awards 2025</li><li class="new-achievement">SSMB Design Competition 2026 — <strong>1st Runner-Up</strong></li></ul></section></div></div>
 
 <div id="stage"><canvas id="dotGrid" aria-hidden="true"></canvas><div id="ring"></div></div>
@@ -365,20 +393,20 @@ const cards=[];
 let lastGridCategory='';
 for(let k=0;k<M;k++){
   const p=PROJECTS[k/REPEAT|0],v=k%REPEAT,el=document.createElement('div'),im=new Image();
-  if(p.category!==lastGridCategory){const heading=document.createElement('div');heading.className='grid-section-title';heading.textContent=p.category+'  /  '+PROJECTS.filter(item=>item.category===p.category).length+' PROJECTS';ring.appendChild(heading);lastGridCategory=p.category}
-  el.className='card';el.dataset.k=k;im.draggable=false;im.alt=p.title;im.decoding='async';im.loading=k<8?'eager':'lazy';im.fetchPriority=k===0?'high':'auto';if(p.preserveColor||p.category==='INTERNSHIP')im.classList.add('color-page');
+  if(p.category!==lastGridCategory){const heading=document.createElement('div');heading.className='grid-section-title';heading.dataset.category=p.category;heading.textContent=p.category+'  /  '+PROJECTS.filter(item=>item.category===p.category).length+' PROJECTS';ring.appendChild(heading);lastGridCategory=p.category}
+  el.className='card';el.dataset.k=k;el.dataset.category=p.category;im.draggable=false;im.alt=p.title;im.decoding='async';im.loading=k<8?'eager':'lazy';im.fetchPriority=k===0?'high':'auto';if(p.preserveColor||p.category==='INTERNSHIP')im.classList.add('color-page');
   const th=p.thumbs&&p.thumbs.length?p.thumbs[v%p.thumbs.length]:null;
   if(th){im.src=th}
   else if(p.image){im.src=p.image;im.style.objectPosition=CROPS[v][0];im.style.transform=`scale(${CROPS[v][1]})`;im.style.transformOrigin=CROPS[v][0]}
   else im.src=ph(k+1);
-  el.appendChild(im);const meta=document.createElement('div'),cat=document.createElement('span'),title=document.createElement('b');meta.className='grid-meta';cat.textContent=p.category+' · '+p.year;title.textContent=p.title;meta.append(cat,title);el.appendChild(meta);ring.appendChild(el);cards.push(el);
+  el.appendChild(im);const meta=document.createElement('div'),cat=document.createElement('span'),title=document.createElement('b');meta.className='grid-meta';cat.textContent=p.category+' · '+p.year;title.textContent=p.title;meta.append(cat,title);el.appendChild(meta);const action=document.createElement('span');action.className='grid-view-link';action.textContent='View project +';el.appendChild(action);ring.appendChild(el);cards.push(el);
 }
 const cats=[...new Set(PROJECTS.map(p=>p.category))].map((name,ci)=>{
   const idx=PROJECTS.map((p,i)=>p.category===name?i:-1).filter(i=>i>=0);
   const el=document.createElement('div');el.className='lab';el.style.setProperty('--c',['#111111','#111111','#111111','#111111','#111111'][ci%5]);el.innerHTML=`${name}<sup>(${idx.length})</sup>`;
   labelsEl.appendChild(el);
   const c={name,el,mid:((idx[0]+idx[idx.length-1]+1)/2)*REPEAT};
-  el.addEventListener('click',()=>{activeCategory=activeCategory===c.name?null:c.name;document.body.classList.toggle('category-filter',!!activeCategory);cats.forEach(other=>other.el.classList.toggle('act',other.name===activeCategory));cards.forEach((card,k)=>card.classList.toggle('category-dim',!!activeCategory&&PROJECTS[k/REPEAT|0].category!==activeCategory));autoTour=false;focusK=-1;target=Math.PI-(c.mid/M)*2*Math.PI});
+  el.addEventListener('click',()=>{activeCategory=activeCategory===c.name?null:c.name;document.body.classList.toggle('category-filter',!!activeCategory);cats.forEach(other=>other.el.classList.toggle('act',other.name===activeCategory));cards.forEach((card,k)=>{const mismatch=!!activeCategory&&PROJECTS[k/REPEAT|0].category!==activeCategory;card.classList.toggle('category-dim',mismatch);if(gridMode)card.hidden=mismatch});ring.querySelectorAll('.grid-section-title').forEach(section=>{section.hidden=gridMode&&!!activeCategory&&section.dataset.category!==activeCategory});if(matchMedia('(max-width:600px)').matches){document.body.classList.remove('mobile-filters-open');filterToggle.setAttribute('aria-expanded','false');filterToggle.textContent=activeCategory?'Filter: '+activeCategory+' +':'Filter Projects +'}autoTour=false;focusK=-1;target=Math.PI-(c.mid/M)*2*Math.PI});
   return c;
 });
 
@@ -396,8 +424,8 @@ function size(){
 }
 addEventListener('resize',size);size();
 
-function setGridMode(enabled){gridMode=enabled;document.body.classList.toggle('grid-view',gridMode);const button=document.getElementById('gridToggle');button.classList.toggle('on',gridMode);button.setAttribute('aria-pressed',String(gridMode));button.textContent=gridMode?'3D':'Ellipse';if(gridMode){autoTour=false;target=null;hov=-1}}
-document.getElementById('gridToggle').onclick=()=>setGridMode(!gridMode);
+function setGridMode(enabled){gridMode=enabled;document.body.classList.toggle('grid-view',gridMode);const button=document.getElementById('gridToggle');button.classList.toggle('on',gridMode);button.setAttribute('aria-pressed',String(gridMode));button.textContent=matchMedia('(max-width:600px)').matches?(gridMode?'Ellipse +':'3D +'):(gridMode?'3D':'Ellipse');if(gridMode){autoTour=false;target=null;hov=-1;cards.forEach((card,k)=>card.hidden=!!activeCategory&&PROJECTS[k/REPEAT|0].category!==activeCategory);ring.querySelectorAll('.grid-section-title').forEach(section=>section.hidden=!!activeCategory&&section.dataset.category!==activeCategory)}else{cards.forEach(card=>card.hidden=false);ring.querySelectorAll('.grid-section-title').forEach(section=>section.hidden=false)}}
+document.getElementById('gridToggle').onclick=()=>setGridMode(!gridMode);\r\nconst mobileToolbar=document.getElementById('mobileToolbar'),filterToggle=document.getElementById('filterToggle'),gridToggleButton=document.getElementById('gridToggle'),mainHeader=document.querySelector('header');\r\nfunction syncMobileControls(){const phone=matchMedia('(max-width:600px)').matches;if(phone){if(gridToggleButton.parentElement!==mobileToolbar)mobileToolbar.appendChild(gridToggleButton)}else if(gridToggleButton.parentElement!==mainHeader){mainHeader.insertBefore(gridToggleButton,mainHeader.querySelector('.sp'))}gridToggleButton.textContent=phone?(gridMode?'Ellipse +':'3D +'):(gridMode?'3D':'Ellipse')}\r\nfilterToggle.addEventListener('click',()=>{const open=!document.body.classList.contains('mobile-filters-open');document.body.classList.toggle('mobile-filters-open',open);filterToggle.setAttribute('aria-expanded',String(open))});\r\naddEventListener('resize',syncMobileControls,{passive:true});syncMobileControls();if(matchMedia('(max-width:600px)').matches)setGridMode(true);
 /* ---------- input ---------- */
 let downCard=null,sx=0,sy=0,lastY=0,hoverAnchorX=0,hoverAnchorY=0;
 stage.addEventListener('pointerdown',e=>{autoTour=false;focusK=-1;downCard=e.target.closest('.card');sx=e.clientX;sy=e.clientY;drag=true;lastX=e.clientX;lastY=e.clientY;vel=0;target=null;stage.classList.add('drag');stage.setPointerCapture(e.pointerId)});
