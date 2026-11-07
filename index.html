@@ -262,7 +262,7 @@ body.grid-view #labels,body.grid-view #center{display:none}
 .card{transition:opacity .35s ease,outline-color .5s,box-shadow .5s}
 body.category-filter .card.category-dim{opacity:.14!important}
 body.category-filter .lab:not(.act){opacity:.42}
-@media(max-height:480px) and (max-width:900px){
+@media(max-height:480px) and (max-width:900px) and (orientation:landscape){
  body:not(.grid-view) #labels{inset:auto 8px calc(30px + env(safe-area-inset-bottom,0px));display:flex;flex-wrap:nowrap;justify-content:flex-start;align-items:center;gap:4px;height:26px;max-height:26px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;scrollbar-width:none}
  body:not(.grid-view) #labels::-webkit-scrollbar{display:none}
  body:not(.grid-view) .lab{position:relative!important;left:auto!important;top:auto!important;transform:none!important;flex:0 0 auto;max-width:none;white-space:nowrap;font-size:9px;padding:4px 6px}
@@ -329,7 +329,7 @@ body.category-filter .lab:not(.act){opacity:.42}
   body.grid-view .foot{display:none}
 }
 @media(max-width:600px) and (max-height:700px){
-  #wheelFeature{grid-template-columns:minmax(0,1fr) 34%;align-items:center;column-gap:12px;row-gap:4px}
+  #wheelFeature{grid-template-columns:minmax(0,1fr) 38%;align-items:center;column-gap:12px;row-gap:4px}
   #wheelFeature .feature-kicker,#wheelFeature h2,#wheelFeature button{grid-column:1}
   #wheelFeature img{grid-column:2;grid-row:1/4;height:clamp(78px,22vh,120px)}
   body:not(.grid-view) #stage{inset:calc(252px + env(safe-area-inset-top,0px)) 0 calc(60px + env(safe-area-inset-bottom,0px))}
@@ -458,7 +458,7 @@ function size(){
   W=stage.clientWidth;H=stage.clientHeight;phonePortrait=innerWidth<760&&innerHeight>innerWidth;
   const cardRx=phonePortrait?W*.56:W*(H<480?.28:.40),cardRy=phonePortrait?Math.min(H*.60,W*1.2):H<480?Math.min(H*.20,cardRx*.55):W<600?Math.min(H*.32,cardRx*1.2):Math.min(H*.42,cardRx*.72);
   orbitOutset=phonePortrait?Math.max(12,Math.min(18,W*.04)):64;
-  rx=cardRx*(phonePortrait?.48:.66);ry=cardRy*(phonePortrait?.75:.66);
+  rx=cardRx*(phonePortrait?.48:.66);ry=cardRy*(phonePortrait?.62:.66);
   const circumference=Math.PI*(3*(cardRx+cardRy)-Math.sqrt((3*cardRx+cardRy)*(cardRx+3*cardRy)));
   // Keep phone cards large enough to read while allowing controlled overlap around the wheel.
   // Desktop retains its denser sizing; portrait cards no longer collapse to edge-on slivers.
@@ -467,8 +467,9 @@ function size(){
 }
 addEventListener('resize',size);size();
 
-function currentFrontCard(){const angle=target===null?phase:target,raw=Math.round((Math.PI/2-angle)*M/(Math.PI*2));return ((raw%M)+M)%M}
-function settleOnFront(){const k=currentFrontCard(),desired=Math.PI/2-k/M*Math.PI*2;focusK=k;target=phase+Math.atan2(Math.sin(desired-phase),Math.cos(desired-phase));vel=0}
+function wheelFocusAngle(){return phonePortrait?-Math.PI/2:Math.PI/2}
+function currentFrontCard(){const angle=target===null?phase:target,raw=Math.round((wheelFocusAngle()-angle)*M/(Math.PI*2));return ((raw%M)+M)%M}
+function settleOnFront(){const k=currentFrontCard(),desired=wheelFocusAngle()-k/M*Math.PI*2;focusK=k;target=phase+Math.atan2(Math.sin(desired-phase),Math.cos(desired-phase));vel=0}
 let wheelSnapTimer=0;
 function scheduleWheelSnap(){clearTimeout(wheelSnapTimer);wheelSnapTimer=setTimeout(settleOnFront,170)}
 const wheelFeatureImage=document.getElementById('wheelFeatureImage'),wheelFeatureMeta=document.getElementById('wheelFeatureMeta'),wheelFeatureTitle=document.getElementById('wheelFeatureTitle'),wheelFeatureOpen=document.getElementById('wheelFeatureOpen');let featuredProject=-1;
@@ -480,7 +481,7 @@ document.getElementById('gridToggle').onclick=()=>setGridMode(!gridMode);
 const mobileToolbar=document.getElementById('mobileToolbar'),filterToggle=document.getElementById('filterToggle'),gridToggleButton=document.getElementById('gridToggle'),mainHeader=document.querySelector('header');
 function syncMobileControls(){const phone=matchMedia('(max-width:600px)').matches;if(phone){if(gridToggleButton.parentElement!==mobileToolbar)mobileToolbar.appendChild(gridToggleButton)}else if(gridToggleButton.parentElement!==mainHeader){mainHeader.insertBefore(gridToggleButton,mainHeader.querySelector('.sp'))}gridToggleButton.textContent=phone?(gridMode?'3D +':'Ellipse +'):(gridMode?'3D':'Ellipse')}
 filterToggle.addEventListener('click',()=>{const open=!document.body.classList.contains('mobile-filters-open');document.body.classList.toggle('mobile-filters-open',open);filterToggle.setAttribute('aria-expanded',String(open))});
-addEventListener('resize',syncMobileControls,{passive:true});syncMobileControls();updateWheelFeature(0);if(matchMedia('(max-width:600px)').matches){autoTour=false;focusK=0;target=Math.PI/2}
+addEventListener('resize',syncMobileControls,{passive:true});syncMobileControls();updateWheelFeature(0);if(matchMedia('(max-width:600px)').matches){autoTour=false;focusK=0;target=wheelFocusAngle()}
 /* ---------- input ---------- */
 let downCard=null,sx=0,sy=0,lastY=0,hoverAnchorX=0,hoverAnchorY=0;
 stage.addEventListener('pointerdown',e=>{autoTour=false;document.body.classList.add('wheel-active');focusK=currentFrontCard();downCard=e.target.closest('.card');sx=e.clientX;sy=e.clientY;drag=true;lastX=e.clientX;lastY=e.clientY;vel=0;target=null;stage.classList.add('drag');stage.setPointerCapture(e.pointerId)});
@@ -586,14 +587,14 @@ function frame(){
   if(target!==null){let d=Math.atan2(Math.sin(target-phase),Math.cos(target-phase));phase+=d*.07;if(Math.abs(d)<.002)target=null}
   else if(!drag){phase+=vel+(hov<0&&!reduce?.0005:0);vel*=.94;if(Math.abs(vel)<1e-5)vel=0}
   tx+=((my-.5)*-9-tx)*.06;ty+=((mx-.5)*12-ty)*.06;
-  const centerX=phonePortrait?W*.83:W/2,centerY=phonePortrait?H*.44:H/2;
+  const centerX=phonePortrait?W*.92:W/2,centerY=phonePortrait?H*.55:H/2;
   ring.style.transformOrigin=`${centerX}px ${centerY}px`;
   ring.style.transform=`rotateX(${tx}deg) rotateY(${ty}deg)`;
   const zr=250;
   for(let k=0;k<M;k++){
     const a=k/M*Math.PI*2+phase,ca=Math.cos(a),sa=Math.sin(a);
     const h=hv[k]+=((k===(hov>=0?hov:focusK)&&!drag?1:0)-hv[k])*.14;
-    let x=ca*rx,y=sa*ry,z0=sa*zr,front=(sa+1)/2,edge=Math.pow(Math.abs(sa),1.35);
+    let x=ca*rx,y=sa*ry,z0=(phonePortrait?-sa:sa)*zr,front=phonePortrait?(1-sa)/2:(sa+1)/2,edge=Math.pow(Math.abs(sa),1.35);
     let rY=(ca>=0?-1:1)*Math.min(phonePortrait?24:88,10+(phonePortrait?14:80)*edge),rZ=ca*sa*9,sc=.6+.4*front;
     const z=z0+h*(zr+140-z0),f=(P-z)/(P-z0);
     x=(centerX-W/2)+x*f;y=(centerY-H/2)+y*f;const depth=z;
