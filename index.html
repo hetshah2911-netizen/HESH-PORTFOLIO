@@ -271,6 +271,17 @@ body.category-filter .lab:not(.act){opacity:.42}
 /* Phone folio: editorial project list with a compact filter bar */
 #mobileToolbar{display:none}
 .grid-view-link{display:none}
+#wheelFeature{display:none}
+@media(min-width:601px){
+  #wheelFeature{position:fixed;left:50%;top:50%;z-index:12;width:min(360px,30vw);padding:10px;display:grid;grid-template-columns:90px minmax(0,1fr);align-items:center;gap:12px;background:rgba(5,6,5,.88);border:1px solid rgba(243,244,237,.2);opacity:0;visibility:hidden;transform:translate(-50%,-50%) scale(.97);transition:opacity .28s ease,transform .4s cubic-bezier(.2,.7,.2,1),visibility .28s;pointer-events:none;backdrop-filter:blur(10px)}
+  body.wheel-active:not(.grid-view):not(.about-open):not(.dopen) #wheelFeature{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1)}
+  #wheelFeature img{grid-column:1;grid-row:1/4;width:90px;height:90px;object-fit:cover;filter:grayscale(100%) contrast(1.08)}
+  #wheelFeature img.color-page{filter:none}
+  #wheelFeature .feature-kicker{font-size:9px;line-height:1.25;letter-spacing:.12em;text-transform:uppercase;color:#caff00}
+  #wheelFeature h2{margin:4px 0 6px;font-size:clamp(16px,1.45vw,22px);line-height:1.05;font-weight:500;color:#f3f4ed}
+  #wheelFeature button{justify-self:start;padding:0 0 3px;border:0;border-bottom:1px solid #caff00;background:transparent;color:#f3f4ed;font:600 11px/1.2 'Inter Tight',Arial,sans-serif;pointer-events:auto;cursor:pointer}
+  body.grid-view #wheelFeature{display:none}
+}
 @media(max-width:600px){
   header{position:fixed;top:env(safe-area-inset-top,0px);height:58px;padding:0 16px;gap:clamp(12px,4vw,20px);background:rgba(5,6,5,.96);border-bottom:1px solid rgba(243,244,237,.14);backdrop-filter:blur(14px)}
   header .logo{width:82px;height:30px;margin-right:0}
@@ -280,6 +291,27 @@ body.category-filter .lab:not(.act){opacity:.42}
   #mobileToolbar .grid-toggle{display:inline-flex;align-items:center}
   #filterToggle{max-width:70vw;overflow:hidden;text-overflow:ellipsis}
   body.about-open #mobileToolbar,body.dopen #mobileToolbar{display:none}
+  #wheelFeature{position:fixed;top:calc(112px + env(safe-area-inset-top,0px));left:16px;right:16px;z-index:17;display:grid;grid-template-columns:minmax(0,1fr);gap:8px;pointer-events:auto}
+  #wheelFeature>div{display:contents}
+  #wheelFeature .feature-kicker{order:1}
+  #wheelFeature h2{order:2}
+  #wheelFeature img{order:3}
+  #wheelFeature button{order:4}
+  #wheelFeature .feature-kicker{font-size:9px;line-height:1.2;letter-spacing:.13em;text-transform:uppercase;color:#caff00}
+  #wheelFeature h2{margin:3px 0 0;font-size:clamp(23px,7vw,34px);line-height:.98;letter-spacing:-.035em;font-weight:500;color:#f3f4ed;max-width:100%;overflow-wrap:anywhere}
+  #wheelFeature img{display:block;width:100%;height:clamp(105px,19vh,155px);object-fit:cover;filter:grayscale(100%) contrast(1.08);border:1px solid rgba(243,244,237,.16)}
+  #wheelFeature img.color-page{filter:none}
+  #wheelFeature button{justify-self:start;padding:0 0 3px;border:0;border-bottom:1px solid #caff00;background:transparent;color:#f3f4ed;font:600 13px/1.2 'Inter Tight',Arial,sans-serif;cursor:pointer}
+  body.about-open #wheelFeature,body.dopen #wheelFeature{display:none!important}
+  body:not(.grid-view) #stage{position:fixed;inset:calc(382px + env(safe-area-inset-top,0px)) 0 calc(76px + env(safe-area-inset-bottom,0px));height:auto;overflow:hidden;perspective:1250px;touch-action:none;overscroll-behavior:contain}
+  body:not(.grid-view) #labels{display:none}
+  body:not(.grid-view).mobile-filters-open #wheelFeature{top:calc(158px + env(safe-area-inset-top,0px))}
+  body:not(.grid-view).mobile-filters-open #stage{top:calc(426px + env(safe-area-inset-top,0px))}
+  body:not(.grid-view).mobile-filters-open #labels{position:fixed!important;inset:calc(104px + env(safe-area-inset-top,0px)) 0 auto!important;display:flex!important;flex-wrap:nowrap;align-items:center;gap:6px;height:44px;max-height:44px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;scrollbar-width:none;padding:0 12px;background:var(--bg);border-bottom:1px solid rgba(243,244,237,.14);z-index:18}
+  body:not(.grid-view).mobile-filters-open #labels::-webkit-scrollbar{display:none}
+  body:not(.grid-view).mobile-filters-open .lab{position:relative!important;left:auto!important;top:auto!important;transform:none!important;flex:0 0 auto;max-width:none;min-height:30px;padding:7px 9px;font-size:10px;line-height:1}
+  body:not(.grid-view) #center{display:none}
+  body.grid-view #wheelFeature{display:none}
   body.grid-view #stage{position:fixed;inset:calc(104px + env(safe-area-inset-top,0px)) 0 0;height:auto;overflow-x:hidden;overflow-y:auto;perspective:none;touch-action:pan-y;overscroll-behavior:contain}
   body.grid-view.mobile-filters-open #stage{top:calc(148px + env(safe-area-inset-top,0px))}
   body.grid-view #ring{position:relative;left:0;top:0;width:100%;height:auto;display:grid;grid-template-columns:minmax(0,1fr);gap:0;padding:8px 18px calc(52px + env(safe-area-inset-bottom,0px));transform:none!important;transform-style:flat}
@@ -296,6 +328,13 @@ body.category-filter .lab:not(.act){opacity:.42}
   body.grid-view.mobile-filters-open .lab{position:relative!important;left:auto!important;top:auto!important;transform:none!important;flex:0 0 auto;max-width:none;min-height:30px;padding:7px 9px;font-size:10px;line-height:1}
   body.grid-view .foot{display:none}
 }
+@media(max-width:600px) and (max-height:700px){
+  #wheelFeature{grid-template-columns:minmax(0,1fr) 34%;align-items:center;column-gap:12px;row-gap:4px}
+  #wheelFeature .feature-kicker,#wheelFeature h2,#wheelFeature button{grid-column:1}
+  #wheelFeature img{grid-column:2;grid-row:1/4;height:clamp(78px,22vh,120px)}
+  body:not(.grid-view) #stage{inset:calc(252px + env(safe-area-inset-top,0px)) 0 calc(60px + env(safe-area-inset-bottom,0px))}
+  body:not(.grid-view).mobile-filters-open #stage{top:calc(296px + env(safe-area-inset-top,0px))}
+}
 </style>
 </head>
 <body>
@@ -308,6 +347,7 @@ body.category-filter .lab:not(.act){opacity:.42}
   <span class="sp"></span><span class="hide-s">EN / हिं</span>
 </header>
 <div id="mobileToolbar" aria-label="Project browsing controls"><button id="filterToggle" type="button" aria-expanded="false">Filter Projects +</button></div>
+<section id="wheelFeature" aria-live="polite" aria-label="Selected project"><img id="wheelFeatureImage" alt=""><div><span class="feature-kicker" id="wheelFeatureMeta"></span><h2 id="wheelFeatureTitle"></h2><button id="wheelFeatureOpen" type="button">View project +</button></div></section>
 <div id="aboutPage" role="dialog" aria-modal="true" aria-labelledby="aboutTitle"><canvas id="aboutDotGrid" aria-hidden="true"></canvas><div class="about-layout"><section class="about-masthead"><div class="about-heading"><div class="about-eyebrow">Portfolio · About</div><h1 class="about-mark" id="aboutTitle">Het Shah</h1><div class="about-role">Architecture Undergraduate Student</div><p class="about-bio">An enthusiastic and curious designer, driven by a deep passion for architecture, with a belief that every space should evoke both function and feeling. Approaching design as a form of sculpture, I shape forms that encourage playfulness, curiosity, and connection.</p></div><div class="about-photo"><img src="1958a7b4efa473fbb344.png" alt="Het Shah, architecture undergraduate student"></div></section><div class="about-meta-grid"><section><h2>Languages</h2><p>English · Hindi · Gujarati · Marwadi · Marathi</p></section><section><h2>Location</h2><p>Mumbai · Maharashtra · India</p></section><section><h2>Contact</h2><ul class="about-contact" id="aboutContact"><li><a href="mailto:hetshah2911@gmail.com">hetshah2911@gmail.com</a></li><li><a href="tel:+919619552292">+91 9619552292</a></li><li>Instagram</li></ul></section></div><div class="about-study-grid"><section><h2>Education</h2><div class="about-education"><div><span class="about-ed-year">2011 — 2022</span><p class="about-ed-title">Rustomjee International School &amp; Junior College<br>SSC and HSC · Dahisar</p></div><div><span class="about-ed-year">2022 — 2027</span><p class="about-ed-title">IES College of Architecture<br>B.Arch · Bandra</p></div></div></section><section><h2>Softwares</h2><ul class="about-software"><li>AutoCAD</li><li>SketchUp</li><li>Rhino</li><li>Grasshopper</li><li>Photoshop</li><li>D5</li><li>InDesign</li><li>Enscape</li></ul></section></div><section class="about-competitions"><h2>Competitions</h2><ul><li>67th HUDCO Trophy · NASA India — <strong>Citation I</strong> · Trophy Head</li><li>67th LIK Trophy · NASA India — <strong>Juror’s Choice 2</strong> · Technical Details &amp; Documentation</li><li>67th MSL Trophy · NASA India — <strong>Shortlisted Top 12</strong> · Trophy Head</li><li>67th G-Scn Trophy · NASA India — Participated · Design &amp; Research</li><li>67th WAT Trophy · NASA India — Participated</li><li>66th G-Scn Trophy · NASA India — <strong>Shortlisted Top 12</strong> · Design &amp; Research</li><li>66th HUDCO Trophy · NASA India — Participated · Research &amp; Analysis</li><li>66th ANDC Trophy · NASA India — Participated · Design &amp; Research</li><li>66th MSL Trophy · NASA India — Participated · Design &amp; Research</li><li>COA Awards 2025</li><li class="new-achievement">SSMB Design Competition 2026 — <strong>1st Runner-Up</strong></li></ul></section></div></div>
 
 <div id="stage"><canvas id="dotGrid" aria-hidden="true"></canvas><div id="ring"></div></div>
@@ -425,15 +465,23 @@ function size(){
 }
 addEventListener('resize',size);size();
 
-function setGridMode(enabled){gridMode=enabled;document.body.classList.toggle('grid-view',gridMode);const button=document.getElementById('gridToggle');button.classList.toggle('on',gridMode);button.setAttribute('aria-pressed',String(gridMode));button.textContent=matchMedia('(max-width:600px)').matches?(gridMode?'Ellipse +':'3D +'):(gridMode?'3D':'Ellipse');if(gridMode){autoTour=false;target=null;hov=-1;cards.forEach((card,k)=>card.hidden=!!activeCategory&&PROJECTS[k/REPEAT|0].category!==activeCategory);ring.querySelectorAll('.grid-section-title').forEach(section=>section.hidden=!!activeCategory&&section.dataset.category!==activeCategory)}else{cards.forEach(card=>card.hidden=false);ring.querySelectorAll('.grid-section-title').forEach(section=>section.hidden=false)}}
+function currentFrontCard(){const raw=Math.round((Math.PI/2-phase)*M/(Math.PI*2));return ((raw%M)+M)%M}
+function settleOnFront(){const k=currentFrontCard(),desired=Math.PI/2-k/M*Math.PI*2;focusK=k;target=phase+Math.atan2(Math.sin(desired-phase),Math.cos(desired-phase));vel=0}
+let wheelSnapTimer=0;
+function scheduleWheelSnap(){clearTimeout(wheelSnapTimer);wheelSnapTimer=setTimeout(settleOnFront,170)}
+const wheelFeatureImage=document.getElementById('wheelFeatureImage'),wheelFeatureMeta=document.getElementById('wheelFeatureMeta'),wheelFeatureTitle=document.getElementById('wheelFeatureTitle'),wheelFeatureOpen=document.getElementById('wheelFeatureOpen');let featuredProject=-1;
+function updateWheelFeature(k){const pi=Math.max(0,Math.min(N-1,k/REPEAT|0));if(pi===featuredProject)return;featuredProject=pi;const p=PROJECTS[pi],image=p.thumbs&&p.thumbs.length?p.thumbs[0]:p.image||ph(pi+1);wheelFeatureImage.src=image;wheelFeatureImage.alt=p.title;wheelFeatureImage.classList.toggle('color-page',!!p.preserveColor||p.category==='INTERNSHIP');wheelFeatureMeta.textContent=p.category+' · '+p.year;wheelFeatureTitle.textContent=p.title;wheelFeatureOpen.setAttribute('aria-label','View project: '+p.title)}
+wheelFeatureOpen.addEventListener('click',()=>{if(featuredProject>=0)openDetail(featuredProject,cards[featuredProject],0)});
+
+function setGridMode(enabled){gridMode=enabled;document.body.classList.toggle('grid-view',gridMode);const button=document.getElementById('gridToggle');button.classList.toggle('on',gridMode);button.setAttribute('aria-pressed',String(gridMode));button.textContent=matchMedia('(max-width:600px)').matches?(gridMode?'3D +':'Ellipse +'):(gridMode?'3D':'Ellipse');if(gridMode){document.body.classList.remove('wheel-active');autoTour=false;target=null;hov=-1;cards.forEach((card,k)=>card.hidden=!!activeCategory&&PROJECTS[k/REPEAT|0].category!==activeCategory);ring.querySelectorAll('.grid-section-title').forEach(section=>section.hidden=!!activeCategory&&section.dataset.category!==activeCategory)}else{cards.forEach(card=>card.hidden=false);ring.querySelectorAll('.grid-section-title').forEach(section=>section.hidden=false);focusK=currentFrontCard();updateWheelFeature(focusK)}size();resizeDotGrid()}
 document.getElementById('gridToggle').onclick=()=>setGridMode(!gridMode);
 const mobileToolbar=document.getElementById('mobileToolbar'),filterToggle=document.getElementById('filterToggle'),gridToggleButton=document.getElementById('gridToggle'),mainHeader=document.querySelector('header');
-function syncMobileControls(){const phone=matchMedia('(max-width:600px)').matches;if(phone){if(gridToggleButton.parentElement!==mobileToolbar)mobileToolbar.appendChild(gridToggleButton)}else if(gridToggleButton.parentElement!==mainHeader){mainHeader.insertBefore(gridToggleButton,mainHeader.querySelector('.sp'))}gridToggleButton.textContent=phone?(gridMode?'Ellipse +':'3D +'):(gridMode?'3D':'Ellipse')}
+function syncMobileControls(){const phone=matchMedia('(max-width:600px)').matches;if(phone){if(gridToggleButton.parentElement!==mobileToolbar)mobileToolbar.appendChild(gridToggleButton)}else if(gridToggleButton.parentElement!==mainHeader){mainHeader.insertBefore(gridToggleButton,mainHeader.querySelector('.sp'))}gridToggleButton.textContent=phone?(gridMode?'3D +':'Ellipse +'):(gridMode?'3D':'Ellipse')}
 filterToggle.addEventListener('click',()=>{const open=!document.body.classList.contains('mobile-filters-open');document.body.classList.toggle('mobile-filters-open',open);filterToggle.setAttribute('aria-expanded',String(open))});
-addEventListener('resize',syncMobileControls,{passive:true});syncMobileControls();if(matchMedia('(max-width:600px)').matches)setGridMode(true);
+addEventListener('resize',syncMobileControls,{passive:true});syncMobileControls();updateWheelFeature(0);
 /* ---------- input ---------- */
 let downCard=null,sx=0,sy=0,lastY=0,hoverAnchorX=0,hoverAnchorY=0;
-stage.addEventListener('pointerdown',e=>{autoTour=false;focusK=-1;downCard=e.target.closest('.card');sx=e.clientX;sy=e.clientY;drag=true;lastX=e.clientX;lastY=e.clientY;vel=0;target=null;stage.classList.add('drag');stage.setPointerCapture(e.pointerId)});
+stage.addEventListener('pointerdown',e=>{autoTour=false;document.body.classList.add('wheel-active');focusK=currentFrontCard();downCard=e.target.closest('.card');sx=e.clientX;sy=e.clientY;drag=true;lastX=e.clientX;lastY=e.clientY;vel=0;target=null;stage.classList.add('drag');stage.setPointerCapture(e.pointerId)});
 stage.addEventListener('pointermove',e=>{
   mx=e.clientX/W;my=e.clientY/H;
   if(drag){const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;const d=phonePortrait?dx+dy*.55:dx;phase-=d/rx;vel=-d/rx*.6}
@@ -443,11 +491,11 @@ stage.addEventListener('pointermove',e=>{
     if(hov<0||moved>18){if(next!==hov){hov=next;hoverAnchorX=e.clientX;hoverAnchorY=e.clientY}}
   }
 });
-const up=()=>{drag=false;stage.classList.remove('drag')};
-stage.addEventListener('pointerup',e=>{up();if(downCard&&Math.hypot(e.clientX-sx,e.clientY-sy)<6)openDetail(downCard.dataset.k/REPEAT|0,downCard,downCard.dataset.k%REPEAT);downCard=null});
-stage.addEventListener('pointercancel',()=>{up();downCard=null});
+const up=(snap=false)=>{drag=false;stage.classList.remove('drag');if(snap)scheduleWheelSnap()};
+stage.addEventListener('pointerup',e=>{const moved=Math.hypot(e.clientX-sx,e.clientY-sy)>=6;up(moved);if(downCard&&!moved)openDetail(downCard.dataset.k/REPEAT|0,downCard,downCard.dataset.k%REPEAT);downCard=null});
+stage.addEventListener('pointercancel',()=>{up(true);downCard=null});
 stage.addEventListener('pointerleave',()=>{hov=-1;hoverAnchorX=hoverAnchorY=0;mx=my=.5});
-stage.addEventListener('wheel',e=>{if(gridMode)return;autoTour=false;focusK=-1;e.preventDefault();target=null;vel=Math.max(-.05,Math.min(.05,vel+(e.deltaY+e.deltaX)*.00006))},{passive:false});
+stage.addEventListener('wheel',e=>{if(gridMode)return;autoTour=false;document.body.classList.add('wheel-active');e.preventDefault();target=null;vel=Math.max(-.08,Math.min(.08,vel+(e.deltaY+e.deltaX)*.00018));scheduleWheelSnap()},{passive:false});
 
 const aboutEl=document.getElementById('aboutPage');
 function setPortfolioNav(id){document.querySelectorAll('header a').forEach(a=>a.classList.toggle('on',a.id===id))}
@@ -529,6 +577,9 @@ function frame(){
     if(elapsed<9000){const desired=Math.PI/2-(focusK/M)*Math.PI*2;if(target===null||Math.abs(Math.atan2(Math.sin(desired-phase),Math.cos(desired-phase)))>.03)target=desired}
     else {autoTour=false;focusK=tourStops[3]*REPEAT}
   }
+  if(!autoTour&&hov<0)focusK=currentFrontCard();
+  const featuredK=hov>=0?hov:focusK;updateWheelFeature(featuredK);
+  if(hov>=0)document.body.classList.add('wheel-active');
   if(target!==null){let d=Math.atan2(Math.sin(target-phase),Math.cos(target-phase));phase+=d*.07;if(Math.abs(d)<.002)target=null}
   else if(!drag){phase+=vel+(hov<0&&!reduce?.0005:0);vel*=.94;if(Math.abs(vel)<1e-5)vel=0}
   tx+=((my-.5)*-9-tx)*.06;ty+=((mx-.5)*12-ty)*.06;
@@ -540,7 +591,7 @@ function frame(){
     let x=ca*rx,y=sa*ry,z0=sa*zr,front=(sa+1)/2,edge=Math.pow(Math.abs(sa),1.35);
     let rY=(ca>=0?-1:1)*Math.min(phonePortrait?62:88,10+(phonePortrait?52:80)*edge),rZ=ca*sa*9,sc=.6+.4*front;
     const z=z0+h*(zr+140-z0),f=(P-z)/(P-z0);
-    x*=f;y*=f;const isLeft=x<0,depth=isLeft?-z:z;
+    x*=f;y*=f;const depth=z;
     const t=`translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,${depth.toFixed(1)}px) rotateY(${(rY*(1-h)).toFixed(2)}deg) rotateZ(${(rZ*(1-h)).toFixed(2)}deg) scale(${(sc*(1+.34*h)).toFixed(3)})`;
     const c=cards[k];c.classList.toggle('focused',k===(hov>=0?hov:focusK));c.style.transform=t;
     c.style.opacity=activeCategory&&PROJECTS[k/REPEAT|0].category!==activeCategory?'.14':'1';
