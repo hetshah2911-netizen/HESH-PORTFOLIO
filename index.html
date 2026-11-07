@@ -460,7 +460,9 @@ function size(){
   orbitOutset=phonePortrait?Math.max(12,Math.min(18,W*.04)):64;
   rx=cardRx*(phonePortrait?.48:.66);ry=cardRy*(phonePortrait?.75:.66);
   const circumference=Math.PI*(3*(cardRx+cardRy)-Math.sqrt((3*cardRx+cardRy)*(cardRx+3*cardRy)));
-  cw=Math.max(20,Math.min(W*(phonePortrait?.175:.14),225,circumference/M*(phonePortrait?1.75:1.45)));ch=cw*.68;
+  // Keep phone cards large enough to read while allowing controlled overlap around the wheel.
+  // Desktop retains its denser sizing; portrait cards no longer collapse to edge-on slivers.
+  cw=Math.max(20,Math.min(W*(phonePortrait?.22:.14),phonePortrait?100:225,circumference/M*(phonePortrait?2.25:1.45)));ch=cw*.68;
   cards.forEach(c=>{c.style.width=cw+'px';c.style.height=ch+'px';c.style.marginLeft=-cw/2+'px';c.style.marginTop=-ch/2+'px'});
 }
 addEventListener('resize',size);size();
@@ -592,7 +594,7 @@ function frame(){
     const a=k/M*Math.PI*2+phase,ca=Math.cos(a),sa=Math.sin(a);
     const h=hv[k]+=((k===(hov>=0?hov:focusK)&&!drag?1:0)-hv[k])*.14;
     let x=ca*rx,y=sa*ry,z0=sa*zr,front=(sa+1)/2,edge=Math.pow(Math.abs(sa),1.35);
-    let rY=(ca>=0?-1:1)*Math.min(phonePortrait?62:88,10+(phonePortrait?52:80)*edge),rZ=ca*sa*9,sc=.6+.4*front;
+    let rY=(ca>=0?-1:1)*Math.min(phonePortrait?24:88,10+(phonePortrait?14:80)*edge),rZ=ca*sa*9,sc=.6+.4*front;
     const z=z0+h*(zr+140-z0),f=(P-z)/(P-z0);
     x=(centerX-W/2)+x*f;y=(centerY-H/2)+y*f;const depth=z;
     const t=`translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,${depth.toFixed(1)}px) rotateY(${(rY*(1-h)).toFixed(2)}deg) rotateZ(${(rZ*(1-h)).toFixed(2)}deg) scale(${(sc*(1+.34*h)).toFixed(3)})`;
